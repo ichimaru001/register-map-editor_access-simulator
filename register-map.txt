@@ -1,0 +1,5 @@
+# ADDR  NAME       VALUE   DESCRIPTION         
+0x00    CTRL_REG   0x0123  Control Register    
+0x01    STATUS_REG 0x0000  Status Flags        
+0x02    DATA_REG   0x0000  Data Register       
+0x03    MODE_REG   0x0003  Mode Configuration  
