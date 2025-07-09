@@ -2,6 +2,8 @@
 # AUTHOR  :     ichimaru001
 # DATE    :     05/07/25
 
+import re # regex 
+
 print("Hello, World!\nWelcome to the memory-mapped register-map editor and access simulator!\n")
 
 registerTable: dict[str, dict[str, str]] = {}
@@ -69,17 +71,19 @@ while userChoice != 8:
     print("\n")
     if userRegisterAddress in registerTable:
       userRegisterValue: str = ""
-      register: str = registerTable[userRegisterAddress]
+      register: dict[str, str] = registerTable[userRegisterAddress]
       errorFlag: int = 1
       while errorFlag:
         userRegisterValue = input("Enter a new value for this register (e.g. 0x3251): ")
         # check format
-        checkRegisterValue = list(userRegisterValue.strip())
-        if (checkRegisterValue[0] != '0' and checkRegisterValue[1] != 'x') or (len(checkRegisterValue) != 6):
+        checkRegisterValue = userRegisterValue.strip()
+        regexPattern = r"0x[0-9A-Fa-f]{4}"
+        # if (checkRegisterValue[0] != '0' and checkRegisterValue[1] != 'x') or (len(checkRegisterValue) != 6):
+        if re.fullmatch(regexPattern,checkRegisterValue):
+          errorFlag = 0
+        else:
           print("error occurred!")
           errorFlag = 1
-        else:
-          errorFlag = 0
       register.update({"value":userRegisterValue})
     else:
       print("No register found!")
@@ -87,13 +91,10 @@ while userChoice != 8:
   if userChoice == 5:
     userDescSearch: str = "" # user search by phrase or keyword
     userDescSearch = input("Enter a search term: ")
-    userDescSearch = userDescSearch.strip()
+    userDescSearch = userDescSearch.strip().lower()
     matchingRegisters: dict[str, dict[str, str]] = {}
     for key, values in registerTable.items():
-      descRegisterArray: list[str] = values["description"].split()
-      descRegisterArray = [term.lower() for term in descRegisterArray]
-      print(f"This is the descRegisterArray: {descRegisterArray}")
-      if userDescSearch in descRegisterArray:
+      if userDescSearch in values["description"].lower():
         matchingRegisters[key] = values
         # print("Found a register!")
     if len(matchingRegisters) > 0:
