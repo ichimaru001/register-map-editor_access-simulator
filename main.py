@@ -19,7 +19,6 @@ while userChoice != 8:
   print("   8. Exit")
   userChoice = int(input("Enter your choice (1-8): "))
   if userChoice == 1:
-    # stuff = []
     with open("./register-map.txt", "r") as file:
       headerLine = file.readline()
       headerKeys = headerLine.split() # line split into elements
@@ -34,20 +33,11 @@ while userChoice != 8:
         descString = ' '.join(word for word in descRegister)
         stuffInside[lengthOfRegister - 1] = descString
         stuffInside = stuffInside[:lengthOfRegister]
-        # print(stuffInside)
-        # print(f"This is the description of a register: {descString}")
-        # registerTable[stuffInside[0]] = {
-        #   headerKeys[2]:stuffInside[1],
-        #   headerKeys[3]:stuffInside[2],
-        #   headerKeys[4]:stuffInside[3]
-        # }
+        
         registerTable[stuffInside[0]] = {
           headerKeys[i+2]:stuffInside[i+1]
           for i in range(lengthOfRegister - 1)
         }
-        # stuff.append(stuffInside)
-      # print(stuff)
-      # print(headerKeys)
       print(registerTable)
   if userChoice == 2:
     print("\n** REGISTER TABLE **")
