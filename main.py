@@ -4,8 +4,8 @@
 
 print("Hello, World!\nWelcome to the memory-mapped register-map editor and access simulator!\n")
 
-registerTable = {}
-userChoice:int = -1
+registerTable: dict[str, dict[str, str]] = {}
+userChoice: int = -1
 
 while userChoice != 8:
   print("*** MEMORY-MAPPED REGISTER-MAP EDITOR AND ACCESS SIMULATOR ***")
@@ -20,17 +20,17 @@ while userChoice != 8:
   userChoice = int(input("Enter your choice (1-8): "))
   if userChoice == 1:
     with open("./register-map.txt", "r") as file:
-      headerLine = file.readline()
-      headerKeys = headerLine.split() # line split into elements
+      headerLine: str = file.readline()
+      headerKeys: list[str] = headerLine.split() # line split into elements
       headerKeys = [key.lower() for key in headerKeys] # elements are converted into lowercase
       for line in file:
-        stuffInside = line.split()
+        stuffInside: list[str] = line.split()
         # parsing of description of register
-        lengthOfRegister = 4
+        lengthOfRegister: int = 4
         # ! "desc" is short for "description"
-        descRegister = []
+        descRegister: list[str] = []
         descRegister = stuffInside[lengthOfRegister - 1:]
-        descString = ' '.join(word for word in descRegister)
+        descString: str = ' '.join(word for word in descRegister)
         stuffInside[lengthOfRegister - 1] = descString
         stuffInside = stuffInside[:lengthOfRegister]
         
@@ -43,19 +43,19 @@ while userChoice != 8:
     print("\n** REGISTER TABLE **")
     print(f"{'# ADDR':<7} {'NAME':<10} {'VALUE':<7} {'DESCRIPTION':<20}")
     for registerAddress, registerItems in registerTable.items():
-      registerName = registerItems["name"]
-      registerValue = registerItems["value"]
-      registerDesc = registerItems["description"]
+      registerName: str = registerItems["name"]
+      registerValue: str = registerItems["value"]
+      registerDesc: str = registerItems["description"]
       print(f"{registerAddress:<7} {registerName:<10} {registerValue:<7} {registerDesc:<20}")
     print("\n")
   if userChoice == 3:
-    userRegisterAddress = -1 
+    userRegisterAddress: str = "" 
     userRegisterAddress = input("Enter register address to read: ")
     userRegisterAddress = userRegisterAddress.strip()
     # print(userRegisterAddress)
     print("\n")
     if userRegisterAddress in registerTable:
-      register = registerTable[userRegisterAddress]
+      register: dict[str, str] = registerTable[userRegisterAddress]
       # print(f"{register}")
       for key, value in register.items():
         print(f"{key.capitalize():<12} : {value}")
@@ -63,14 +63,14 @@ while userChoice != 8:
       print("No register found!")
     print("\n")
   if userChoice == 4:
-    userRegisterAddress = -1 
+    userRegisterAddress: str = "" 
     userRegisterAddress = input("Enter register address to write to: ")
     userRegisterAddress = userRegisterAddress.strip()
     print("\n")
     if userRegisterAddress in registerTable:
-      userRegisterValue = -1
-      register = registerTable[userRegisterAddress]
-      errorFlag = 1
+      userRegisterValue: str = ""
+      register: str = registerTable[userRegisterAddress]
+      errorFlag: int = 1
       while errorFlag:
         userRegisterValue = input("Enter a new value for this register (e.g. 0x3251): ")
         # check format
@@ -85,12 +85,12 @@ while userChoice != 8:
       print("No register found!")
     print("\n")
   if userChoice == 5:
-    userDescSearch = "" # user search by phrase or keyword
+    userDescSearch: str = "" # user search by phrase or keyword
     userDescSearch = input("Enter a search term: ")
     userDescSearch = userDescSearch.strip()
-    matchingRegisters = {}
+    matchingRegisters: dict[str, dict[str, str]] = {}
     for key, values in registerTable.items():
-      descRegisterArray = values["description"].split()
+      descRegisterArray: list[str] = values["description"].split()
       descRegisterArray = [term.lower() for term in descRegisterArray]
       print(f"This is the descRegisterArray: {descRegisterArray}")
       if userDescSearch in descRegisterArray:
@@ -101,9 +101,9 @@ while userChoice != 8:
       print("\n** REGISTERS FOUND **")
       print(f"{'# ADDR':<7} {'NAME':<10} {'VALUE':<7} {'DESCRIPTION':<20}")
       for registerAddress, registerItems in matchingRegisters.items():
-        registerName = registerItems["name"]
-        registerValue = registerItems["value"]
-        registerDesc = registerItems["description"]
+        registerName: str = registerItems["name"]
+        registerValue: str = registerItems["value"]
+        registerDesc: str = registerItems["description"]
         print(f"{registerAddress:<7} {registerName:<10} {registerValue:<7} {registerDesc:<20}")
       print("\n")
     else:
@@ -118,7 +118,7 @@ while userChoice != 8:
     with open("./register-map.txt", "w") as file:
       file.writelines(f"{'# ADDR':<7} {'NAME':<10} {'VALUE':<7} {'DESCRIPTION':<20}\n")
       for registerAddress, registerItems in registerTable.items():
-        registerName = registerItems["name"]
-        registerValue = registerItems["value"]
-        registerDesc = registerItems["description"]
+        registerName: str = registerItems["name"]
+        registerValue: str = registerItems["value"]
+        registerDesc: str = registerItems["description"]
         file.writelines(f"{registerAddress:<7} {registerName:<10} {registerValue:<7} {registerDesc:<20}\n")
