@@ -24,18 +24,18 @@ while userChoice != 8:
       headerKeys: list[str] = headerLine.split() # line split into elements
       headerKeys = [key.lower() for key in headerKeys] # elements are converted into lowercase
       for line in file:
-        stuffInside: list[str] = line.split()
+        contentsLine: list[str] = line.split()
         # parsing of description of register
         lengthOfRegister: int = 4
         # ! "desc" is short for "description"
         descRegister: list[str] = []
-        descRegister = stuffInside[lengthOfRegister - 1:]
+        descRegister = contentsLine[lengthOfRegister - 1:]
         descString: str = ' '.join(word for word in descRegister)
-        stuffInside[lengthOfRegister - 1] = descString
-        stuffInside = stuffInside[:lengthOfRegister]
+        contentsLine[lengthOfRegister - 1] = descString
+        contentsLine = contentsLine[:lengthOfRegister]
         
-        registerTable[stuffInside[0]] = {
-          headerKeys[i+2]:stuffInside[i+1]
+        registerTable[contentsLine[0]] = {
+          headerKeys[i+2]:contentsLine[i+1]
           for i in range(lengthOfRegister - 1)
         }
       print(registerTable)
@@ -57,8 +57,8 @@ while userChoice != 8:
     if userRegisterAddress in registerTable:
       register: dict[str, str] = registerTable[userRegisterAddress]
       # print(f"{register}")
-      for key, value in register.items():
-        print(f"{key.capitalize():<12} : {value}")
+      for registerKey, registerValue in register.items():
+        print(f"{registerKey.capitalize():<12} : {registerValue}")
     else:
       print("No register found!")
     print("\n")
